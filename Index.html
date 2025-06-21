@@ -1,1 +1,65 @@
-# Index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Instagram Caption Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fafafa;
+    }
+    textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    button {
+      background: #405DE6;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .caption {
+      background: white;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ AI Instagram Caption Generator</h1>
+  <textarea id="inputText" placeholder="Describe your post (e.g., 'Beach sunset')"></textarea>
+  <button onclick="generateCaption()">Generate Caption</button>
+  <div id="results"></div>
+
+  <script>
+    async function generateCaption() {
+      const inputText = document.getElementById("inputText").value;
+      if (!inputText) return alert("Describe your post first!");
+      
+      const response = await fetch("https://your-backend-api.vercel.app/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: inputText })
+      });
+      
+      const data = await response.json();
+      const captions = data.captions;
+      
+      let html = "";
+      captions.forEach(caption => {
+        html += `<div class="caption">${caption}</div>`;
+      });
+      
+      document.getElementById("results").innerHTML = html;
+    }
+  </script>
+</body>
+</html>
